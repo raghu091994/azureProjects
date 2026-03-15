@@ -1,5 +1,5 @@
 {
-	"name": "RestResourceJPH",
+	"name": "RestResourceJPH_P1",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "RestServiceJSONholder",

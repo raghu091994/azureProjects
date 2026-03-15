@@ -1,5 +1,5 @@
 {
-	"name": "SilverParquetEmployee",
+	"name": "SilverParquetEmployee_P1",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "adlsg2ragLS",

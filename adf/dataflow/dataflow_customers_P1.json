@@ -1,12 +1,12 @@
 {
-	"name": "dataflow_customers",
+	"name": "dataflow_customers_P1",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "bronzeCustomerParquet",
+						"referenceName": "bronzeCustomerParquet_P1",
 						"type": "DatasetReference"
 					},
 					"name": "bronzeCustomer"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SilverParquetCustomer",
+						"referenceName": "SilverParquetCustomer_P1",
 						"type": "DatasetReference"
 					},
 					"name": "sinkSilverCustomer"

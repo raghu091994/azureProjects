@@ -1,5 +1,5 @@
 {
-	"name": "bronzeParquetProducts",
+	"name": "bronzeParquetProducts_P1",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "adlsg2ragLS",

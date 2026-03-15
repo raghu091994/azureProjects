@@ -1,5 +1,5 @@
 {
-	"name": "Bronze_Silver_eventTriggered_p1",
+	"name": "Bronze_Silver_eventTriggered_P1",
 	"properties": {
 		"activities": [
 			{
@@ -37,7 +37,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataflow": {
-											"referenceName": "dataflow_customers",
+											"referenceName": "dataflow_customers_P1",
 											"type": "DataFlowReference",
 											"datasetParameters": {
 												"bronzeCustomer": {
@@ -93,7 +93,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataflow": {
-											"referenceName": "dataflow_employees",
+											"referenceName": "dataflow_employees_P1",
 											"type": "DataFlowReference",
 											"datasetParameters": {
 												"bronzeEmp": {
@@ -146,7 +146,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataflow": {
-											"referenceName": "dataflow_orders",
+											"referenceName": "dataflow_orders_P1",
 											"type": "DataFlowReference",
 											"datasetParameters": {
 												"bronzeOrders": {
@@ -199,7 +199,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataflow": {
-											"referenceName": "dataflow_products",
+											"referenceName": "dataflow_products_P1",
 											"type": "DataFlowReference",
 											"datasetParameters": {
 												"bronzeProducts": {
@@ -288,7 +288,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "SilverParquetProducts2",
+											"referenceName": "SilverParquetProducts2_P1",
 											"type": "DatasetReference",
 											"parameters": {
 												"folderPath": {
@@ -301,7 +301,7 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "AzureSqlTable1",
+											"referenceName": "AzureSqlTable1_P1",
 											"type": "DatasetReference"
 										}
 									]
@@ -352,7 +352,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataflow": {
-											"referenceName": "dataflow_sales",
+											"referenceName": "dataflow_sales_P1",
 											"type": "DataFlowReference",
 											"datasetParameters": {
 												"bronzeSales": {

@@ -1,5 +1,5 @@
 {
-	"name": "Parquet1",
+	"name": "Parquet1_P1",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "adlsg2ragLS",

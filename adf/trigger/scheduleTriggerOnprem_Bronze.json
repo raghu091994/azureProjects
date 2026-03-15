@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "OnpremTables_Bronze",
+					"referenceName": "OnpremTables_Bronze_P1",
 					"type": "PipelineReference"
 				}
 			}

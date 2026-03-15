@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Bronze_Silver_eventTriggered_p1",
+					"referenceName": "Bronze_Silver_eventTriggered_P1",
 					"type": "PipelineReference"
 				},
 				"parameters": {

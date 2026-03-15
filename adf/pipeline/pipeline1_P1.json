@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "pipeline1_P1",
 	"properties": {
 		"activities": [
 			{
@@ -45,13 +45,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Parquet2",
+						"referenceName": "Parquet2_P1",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSqlTable2",
+						"referenceName": "AzureSqlTable2_P1",
 						"type": "DatasetReference"
 					}
 				]
@@ -99,13 +99,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Parquet4",
+						"referenceName": "Parquet4_P1",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSqlTable4",
+						"referenceName": "AzureSqlTable4_P1",
 						"type": "DatasetReference"
 					}
 				]
@@ -153,13 +153,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Parquet3",
+						"referenceName": "Parquet3_P1",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSqlTable3",
+						"referenceName": "AzureSqlTable3_P1",
 						"type": "DatasetReference"
 					}
 				]
@@ -259,13 +259,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Parquet5",
+						"referenceName": "Parquet5_P1",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSqlTable5",
+						"referenceName": "AzureSqlTable5_P1",
 						"type": "DatasetReference"
 					}
 				]

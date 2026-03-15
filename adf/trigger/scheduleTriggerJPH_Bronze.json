@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "JPH_GET_ingest",
+					"referenceName": "JPH_GET_ingest_P1",
 					"type": "PipelineReference"
 				}
 			}

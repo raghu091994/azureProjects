@@ -1,5 +1,5 @@
 {
-	"name": "JPH_GET_ingest",
+	"name": "JPH_GET_ingest_P1",
 	"properties": {
 		"activities": [
 			{
@@ -50,7 +50,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "RestResourceJPH",
+									"referenceName": "RestResourceJPH_P1",
 									"type": "DatasetReference",
 									"parameters": {
 										"relativeURL": {
@@ -62,7 +62,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "ADLSG2ds",
+									"referenceName": "ADLSG2ds_P1",
 									"type": "DatasetReference",
 									"parameters": {
 										"filename": {
@@ -126,7 +126,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "ADLSG2ds",
+									"referenceName": "ADLSG2ds_P1",
 									"type": "DatasetReference",
 									"parameters": {
 										"filename": {
@@ -138,7 +138,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "AzureSqlTable",
+									"referenceName": "AzureSqlTable_P1",
 									"type": "DatasetReference",
 									"parameters": {
 										"tableName": {

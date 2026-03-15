@@ -1,5 +1,5 @@
 {
-	"name": "OnpremTables_Bronze",
+	"name": "OnpremTables_Bronze_P1",
 	"properties": {
 		"activities": [
 			{
@@ -22,7 +22,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "SqlServerTable1",
+						"referenceName": "SqlServerTable1_P1",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -89,13 +89,13 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SqlServerTable1",
+									"referenceName": "SqlServerTable1_P1",
 									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "Parquet1",
+									"referenceName": "Parquet1_P1",
 									"type": "DatasetReference",
 									"parameters": {
 										"fileSystem": {

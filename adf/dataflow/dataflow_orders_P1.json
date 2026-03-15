@@ -1,12 +1,12 @@
 {
-	"name": "dataflow_orders",
+	"name": "dataflow_orders_P1",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "bronzeParquetOrders",
+						"referenceName": "bronzeParquetOrders_P1",
 						"type": "DatasetReference"
 					},
 					"name": "bronzeOrders"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SilverParquetOrders",
+						"referenceName": "SilverParquetOrders_P1",
 						"type": "DatasetReference"
 					},
 					"name": "sinkSilverOrders"

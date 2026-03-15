@@ -1,12 +1,12 @@
 {
-	"name": "dataflow_employees",
+	"name": "dataflow_employees_P1",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "bronzeParquetEmployees",
+						"referenceName": "bronzeParquetEmployees_P1",
 						"type": "DatasetReference"
 					},
 					"name": "bronzeEmp"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SilverParquetEmployee",
+						"referenceName": "SilverParquetEmployee_P1",
 						"type": "DatasetReference"
 					},
 					"name": "sinkSilverEmp"

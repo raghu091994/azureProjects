@@ -1,12 +1,12 @@
 {
-	"name": "dataflow_products",
+	"name": "dataflow_products_P1",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "bronzeParquetProducts",
+						"referenceName": "bronzeParquetProducts_P1",
 						"type": "DatasetReference"
 					},
 					"name": "bronzeProducts"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SilverParquetProducts",
+						"referenceName": "SilverParquetProducts_P1",
 						"type": "DatasetReference"
 					},
 					"name": "sinkSilverProducts"

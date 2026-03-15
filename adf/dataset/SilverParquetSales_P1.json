@@ -1,5 +1,5 @@
 {
-	"name": "SilverParquetSales",
+	"name": "SilverParquetSales_P1",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "adlsg2ragLS",

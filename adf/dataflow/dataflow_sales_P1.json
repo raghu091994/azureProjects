@@ -1,12 +1,12 @@
 {
-	"name": "dataflow_sales",
+	"name": "dataflow_sales_P1",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "bronzeParquetSales",
+						"referenceName": "bronzeParquetSales_P1",
 						"type": "DatasetReference"
 					},
 					"name": "bronzeSales"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SilverParquetSales",
+						"referenceName": "SilverParquetSales_P1",
 						"type": "DatasetReference"
 					},
 					"name": "sinkSilverSales"
