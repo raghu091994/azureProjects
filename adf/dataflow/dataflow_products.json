@@ -1,0 +1,88 @@
+{
+	"name": "dataflow_products",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "bronzeParquetProducts",
+						"type": "DatasetReference"
+					},
+					"name": "bronzeProducts"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SilverParquetProducts",
+						"type": "DatasetReference"
+					},
+					"name": "sinkSilverProducts"
+				}
+			],
+			"transformations": [
+				{
+					"name": "select1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "window1"
+				},
+				{
+					"name": "filter2"
+				},
+				{
+					"name": "select2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ProductID as integer,",
+				"          ProductName as string,",
+				"          Category as string,",
+				"          Price as decimal(10,2),",
+				"          CreatedDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     limit: 10,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> bronzeProducts",
+				"bronzeProducts select(mapColumn(",
+				"          ProductID,",
+				"          ProductName,",
+				"          Category,",
+				"          Price,",
+				"          CreatedDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 filter(!isNull(ProductID) && ProductID != 0) ~> filter1",
+				"filter1 window(over(ProductID),",
+				"     asc(ProductID, true),",
+				"     row_num = rowNumber()) ~> window1",
+				"window1 filter(row_num==1) ~> filter2",
+				"filter2 select(mapColumn(",
+				"          ProductID,",
+				"          ProductName,",
+				"          Category,",
+				"          Price,",
+				"          CreatedDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinkSilverProducts"
+			]
+		}
+	}
+}

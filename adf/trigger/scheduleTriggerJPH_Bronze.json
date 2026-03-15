@@ -1,0 +1,24 @@
+{
+	"name": "scheduleTriggerJPH_Bronze",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "JPH_GET_ingest",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2026-03-11T11:44:00",
+				"timeZone": "Eastern Standard Time"
+			}
+		}
+	}
+}

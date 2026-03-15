@@ -1,0 +1,440 @@
+{
+	"name": "Bronze_Silver_eventTriggered_p1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Switch",
+				"type": "Switch",
+				"dependsOn": [
+					{
+						"activity": "Set variable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"on": {
+						"value": "@split(variables('eventPath'),'/')[2]",
+						"type": "Expression"
+					},
+					"cases": [
+						{
+							"value": "customers",
+							"activities": [
+								{
+									"name": "DataFlowCustomers",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "dataflow_customers",
+											"type": "DataFlowReference",
+											"datasetParameters": {
+												"bronzeCustomer": {
+													"container": {
+														"value": "@split(variables('eventPath'),'/')[0]",
+														"type": "Expression"
+													},
+													"folderPath": {
+														"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+														"type": "Expression"
+													},
+													"fileName": {
+														"value": "@pipeline().parameters.pFileName",
+														"type": "Expression"
+													}
+												},
+												"sinkSilverCustomer": {
+													"container": "silver",
+													"directory": {
+														"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+														"type": "Expression"
+													},
+													"filename": {
+														"value": "@pipeline().parameters.pFileName",
+														"type": "Expression"
+													}
+												}
+											}
+										},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								}
+							]
+						},
+						{
+							"value": "employees",
+							"activities": [
+								{
+									"name": "DataFlowEmployees",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "dataflow_employees",
+											"type": "DataFlowReference",
+											"datasetParameters": {
+												"bronzeEmp": {
+													"container": "@split(variables('eventPath'),'/')[0]",
+													"folderPath": {
+														"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+														"type": "Expression"
+													},
+													"fileName": {
+														"value": "@pipeline().parameters.pFileName",
+														"type": "Expression"
+													}
+												},
+												"sinkSilverEmp": {
+													"container": "silver",
+													"directory": {
+														"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+														"type": "Expression"
+													},
+													"filename": {
+														"value": "@pipeline().parameters.pFileName",
+														"type": "Expression"
+													}
+												}
+											}
+										},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								}
+							]
+						},
+						{
+							"value": "orders",
+							"activities": [
+								{
+									"name": "DataFlowOrders",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "dataflow_orders",
+											"type": "DataFlowReference",
+											"datasetParameters": {
+												"bronzeOrders": {
+													"container": "@split(variables('eventPath'),'/')[0]",
+													"directory": {
+														"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+														"type": "Expression"
+													},
+													"filename": {
+														"value": "@pipeline().parameters.pFileName",
+														"type": "Expression"
+													}
+												},
+												"sinkSilverOrders": {
+													"container": "silver",
+													"directory": {
+														"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+														"type": "Expression"
+													},
+													"filename": {
+														"value": "@pipeline().parameters.pFileName",
+														"type": "Expression"
+													}
+												}
+											}
+										},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								}
+							]
+						},
+						{
+							"value": "products",
+							"activities": [
+								{
+									"name": "DataFlowProducts",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "dataflow_products",
+											"type": "DataFlowReference",
+											"datasetParameters": {
+												"bronzeProducts": {
+													"container": "@split(variables('eventPath'),'/')[0]",
+													"folderPath": {
+														"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+														"type": "Expression"
+													},
+													"fileName": {
+														"value": "@pipeline().parameters.pFileName",
+														"type": "Expression"
+													}
+												},
+												"sinkSilverProducts": {
+													"container": "silver",
+													"directory": {
+														"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+														"type": "Expression"
+													},
+													"filename": {
+														"value": "@pipeline().parameters.pFileName",
+														"type": "Expression"
+													}
+												}
+											}
+										},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								},
+								{
+									"name": "Copy",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "DataFlowProducts",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "ParquetSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"wildcardFolderPath": {
+													"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+													"type": "Expression"
+												},
+												"wildcardFileName": "*",
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "ParquetReadSettings"
+											}
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"preCopyScript": "truncate table dbo.Stg_Products_Silver",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false,
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SilverParquetProducts2",
+											"type": "DatasetReference",
+											"parameters": {
+												"folderPath": {
+													"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+													"type": "Expression"
+												},
+												"container": "silver"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "AzureSqlTable1",
+											"type": "DatasetReference"
+										}
+									]
+								},
+								{
+									"name": "SCD1_Upsert_products",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "Copy",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[dbo].[usp_Merge_Products_SCD1]"
+									},
+									"linkedServiceName": {
+										"referenceName": "AzureSqlDatabase1",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						},
+						{
+							"value": "sales",
+							"activities": [
+								{
+									"name": "DataFlowSales",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "dataflow_sales",
+											"type": "DataFlowReference",
+											"datasetParameters": {
+												"bronzeSales": {
+													"container": "@split(variables('eventPath'),'/')[0]",
+													"folderPath": {
+														"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+														"type": "Expression"
+													},
+													"fileName": {
+														"value": "@pipeline().parameters.pFileName",
+														"type": "Expression"
+													}
+												},
+												"sinkSilverSales": {
+													"container": "silver",
+													"directory": {
+														"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+														"type": "Expression"
+													},
+													"filename": {
+														"value": "@pipeline().parameters.pFileName",
+														"type": "Expression"
+													}
+												}
+											}
+										},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								}
+							]
+						}
+					],
+					"defaultActivities": [
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Set variable",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "eventPath",
+					"value": {
+						"value": "@concat(pipeline().parameters.pFolderPath,'/',pipeline().parameters.pFileName)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"pFolderPath": {
+				"type": "string"
+			},
+			"pFileName": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"eventPath": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-03-13T00:42:58Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

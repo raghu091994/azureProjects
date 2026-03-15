@@ -1,0 +1,45 @@
+{
+	"name": "bronzeParquetOrders",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adlsg2ragLS",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "bronze"
+			},
+			"directory": {
+				"type": "string",
+				"defaultValue": "sqlserver/orders/load_date=2026-03-12"
+			},
+			"filename": {
+				"type": "string",
+				"defaultValue": "orders.parquet"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().directory",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
