@@ -1,0 +1,173 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ragadf17"
+		},
+		"adlsg2ragLS_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'adlsg2ragLS'"
+		},
+		"AzureKeyVault2_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://ragakv.vault.azure.net/"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "raghubootcamp.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "bootcamp34"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "raghu"
+		},
+		"RestServiceJSONholder_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://jsonplaceholder.typicode.com"
+		},
+		"SqlServerOnPremLS_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sqlOnprem-VM"
+		},
+		"SqlServerOnPremLS_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "BootcampDB"
+		},
+		"SqlServerOnPremLS_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "raghu"
+		},
+		"adlsg2ragLS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsg2rag.dfs.core.windows.net/"
+		},
+		"eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFolderPath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"eventTriggerBronze_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/c8ce2eef-2dc1-42c3-bf55-07bd3fa6dd03/resourceGroups/BootcampC34/providers/Microsoft.Storage/storageAccounts/adlsg2rag"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ragadf17_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"adlsg2ragLS_accountKey": {
+						"value": "[parameters('adlsg2ragLS_accountKey')]"
+					},
+					"AzureKeyVault2_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault2_properties_typeProperties_baseUrl')]"
+					},
+					"RestServiceJSONholder_properties_typeProperties_url": {
+						"value": "[parameters('RestServiceJSONholder_properties_typeProperties_url')]"
+					},
+					"adlsg2ragLS_properties_typeProperties_url": {
+						"value": "[parameters('adlsg2ragLS_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "ragadf17_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureSqlDatabase1_properties_typeProperties_server": {
+						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]"
+					},
+					"AzureSqlDatabase1_properties_typeProperties_database": {
+						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_database')]"
+					},
+					"AzureSqlDatabase1_properties_typeProperties_userName": {
+						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_userName')]"
+					},
+					"SqlServerOnPremLS_properties_typeProperties_server": {
+						"value": "[parameters('SqlServerOnPremLS_properties_typeProperties_server')]"
+					},
+					"SqlServerOnPremLS_properties_typeProperties_database": {
+						"value": "[parameters('SqlServerOnPremLS_properties_typeProperties_database')]"
+					},
+					"SqlServerOnPremLS_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServerOnPremLS_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ragadf17_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "ragadf17_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFolderPath": {
+						"value": "[parameters('eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFolderPath')]"
+					},
+					"eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFileName": {
+						"value": "[parameters('eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFileName')]"
+					},
+					"eventTriggerBronze_properties_typeProperties_scope": {
+						"value": "[parameters('eventTriggerBronze_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ragadf17_ArmTemplate_1')]"
+			]
+		}
+	]
+}

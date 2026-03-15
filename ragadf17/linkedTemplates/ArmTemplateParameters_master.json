@@ -1,0 +1,54 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ragadf17"
+		},
+		"adlsg2ragLS_accountKey": {
+			"value": ""
+		},
+		"AzureKeyVault2_properties_typeProperties_baseUrl": {
+			"value": "https://ragakv.vault.azure.net/"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "raghubootcamp.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "bootcamp34"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "raghu"
+		},
+		"RestServiceJSONholder_properties_typeProperties_url": {
+			"value": "https://jsonplaceholder.typicode.com"
+		},
+		"SqlServerOnPremLS_properties_typeProperties_server": {
+			"value": "sqlOnprem-VM"
+		},
+		"SqlServerOnPremLS_properties_typeProperties_database": {
+			"value": "BootcampDB"
+		},
+		"SqlServerOnPremLS_properties_typeProperties_userName": {
+			"value": "raghu"
+		},
+		"adlsg2ragLS_properties_typeProperties_url": {
+			"value": "https://adlsg2rag.dfs.core.windows.net/"
+		},
+		"eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFolderPath": {
+			"value": "@triggerBody().folderPath"
+		},
+		"eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"eventTriggerBronze_properties_typeProperties_scope": {
+			"value": "/subscriptions/c8ce2eef-2dc1-42c3-bf55-07bd3fa6dd03/resourceGroups/BootcampC34/providers/Microsoft.Storage/storageAccounts/adlsg2rag"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

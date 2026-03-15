@@ -1,0 +1,1715 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ragadf17"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "raghubootcamp.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "bootcamp34"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "raghu"
+		},
+		"SqlServerOnPremLS_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sqlOnprem-VM"
+		},
+		"SqlServerOnPremLS_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "BootcampDB"
+		},
+		"SqlServerOnPremLS_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "raghu"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/bronzeParquetOrders_P1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "adlsg2ragLS",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string",
+						"defaultValue": "bronze"
+					},
+					"directory": {
+						"type": "string",
+						"defaultValue": "sqlserver/orders/load_date=2026-03-12"
+					},
+					"filename": {
+						"type": "string",
+						"defaultValue": "orders.parquet"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().directory",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container",
+							"type": "Expression"
+						}
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bronzeParquetProducts_P1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "adlsg2ragLS",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string",
+						"defaultValue": "bronze"
+					},
+					"folderPath": {
+						"type": "string",
+						"defaultValue": "sqlserver/products/load_date=2026-03-12"
+					},
+					"fileName": {
+						"type": "string",
+						"defaultValue": "products.parquet"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folderPath",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container",
+							"type": "Expression"
+						}
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "CustomerID",
+						"type": "INT32"
+					},
+					{
+						"name": "CustomerName",
+						"type": "UTF8"
+					},
+					{
+						"name": "City",
+						"type": "UTF8"
+					},
+					{
+						"name": "Country",
+						"type": "UTF8"
+					},
+					{
+						"name": "load_date",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bronzeParquetSales_P1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "adlsg2ragLS",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string",
+						"defaultValue": "bronze"
+					},
+					"folderPath": {
+						"type": "string",
+						"defaultValue": "sqlserver/sales/load_date=2026-03-12"
+					},
+					"fileName": {
+						"type": "string",
+						"defaultValue": "sales.parquet"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folderPath",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container",
+							"type": "Expression"
+						}
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "CustomerID",
+						"type": "INT32"
+					},
+					{
+						"name": "CustomerName",
+						"type": "UTF8"
+					},
+					{
+						"name": "City",
+						"type": "UTF8"
+					},
+					{
+						"name": "Country",
+						"type": "UTF8"
+					},
+					{
+						"name": "load_date",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]",
+					"database": "[parameters('AzureSqlDatabase1_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('AzureSqlDatabase1_properties_typeProperties_userName')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault2",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "azureSQLdbpassword",
+						"secretVersion": "e318512f83214a85bc3c076e8745f4be"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerOnPremLS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('SqlServerOnPremLS_properties_typeProperties_server')]",
+					"database": "[parameters('SqlServerOnPremLS_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('SqlServerOnPremLS_properties_typeProperties_userName')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault2",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "onPremSQLDBPassword"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SHIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1_P1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Stg_Products_Silver"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable2_P1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "CustomerID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "CustomerName",
+						"type": "varchar"
+					},
+					{
+						"name": "City",
+						"type": "varchar"
+					},
+					{
+						"name": "Country",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Gold_Customers"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable3_P1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "EmployeeID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "EmployeeName",
+						"type": "varchar"
+					},
+					{
+						"name": "Department",
+						"type": "varchar"
+					},
+					{
+						"name": "HireDate",
+						"type": "date"
+					},
+					{
+						"name": "Salary",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Gold_Employees"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable4_P1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "OrderID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "CustomerID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "OrderDate",
+						"type": "date"
+					},
+					{
+						"name": "OrderAmount",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Gold_Orders"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable5_P1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SaleID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Quantity",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SaleDate",
+						"type": "date"
+					},
+					{
+						"name": "TotalAmount",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Gold_Sales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_P1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"tableName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().tableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable1_P1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerOnPremLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServerOnPremLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_customers_P1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "bronzeCustomerParquet_P1",
+								"type": "DatasetReference"
+							},
+							"name": "bronzeCustomer"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SilverParquetCustomer_P1",
+								"type": "DatasetReference"
+							},
+							"name": "sinkSilverCustomer"
+						}
+					],
+					"transformations": [
+						{
+							"name": "select1"
+						},
+						{
+							"name": "filter1",
+							"description": "Filtering rows using expressions on columns 'CustomerID'; Removing nulls and  zero value PKs. "
+						},
+						{
+							"name": "window1"
+						},
+						{
+							"name": "filter2"
+						},
+						{
+							"name": "select2"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          CustomerID as integer,",
+						"          CustomerName as string,",
+						"          City as string,",
+						"          Country as string,",
+						"          load_date as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     limit: 10,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> bronzeCustomer",
+						"bronzeCustomer select(mapColumn(",
+						"          CustomerID,",
+						"          CustomerName,",
+						"          City,",
+						"          Country",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 filter(!isNull(CustomerID) && CustomerID != 0) ~> filter1",
+						"filter1 window(over(CustomerID),",
+						"     asc(CustomerID, true),",
+						"     row_num = rowNumber()) ~> window1",
+						"window1 filter(row_num==1) ~> filter2",
+						"filter2 select(mapColumn(",
+						"          CustomerID,",
+						"          CustomerName,",
+						"          City,",
+						"          Country",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"select2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sinkSilverCustomer"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_employees_P1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "bronzeParquetEmployees_P1",
+								"type": "DatasetReference"
+							},
+							"name": "bronzeEmp"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SilverParquetEmployee_P1",
+								"type": "DatasetReference"
+							},
+							"name": "sinkSilverEmp"
+						}
+					],
+					"transformations": [
+						{
+							"name": "select1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "window1"
+						},
+						{
+							"name": "filter2"
+						},
+						{
+							"name": "select2"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          EmployeeID as integer,",
+						"          EmployeeName as string,",
+						"          Department as string,",
+						"          HireDate as date,",
+						"          Salary as decimal(10,2)",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     limit: 10,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> bronzeEmp",
+						"bronzeEmp select(mapColumn(",
+						"          EmployeeID,",
+						"          EmployeeName,",
+						"          Department,",
+						"          HireDate,",
+						"          Salary",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 filter(!isNull(EmployeeID) && EmployeeID != 0) ~> filter1",
+						"filter1 window(over(EmployeeID),",
+						"     asc(EmployeeID, true),",
+						"     row_num = rowNumber()) ~> window1",
+						"window1 filter(row_num==1) ~> filter2",
+						"filter2 select(mapColumn(",
+						"          EmployeeID,",
+						"          EmployeeName,",
+						"          Department,",
+						"          HireDate,",
+						"          Salary",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"select2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sinkSilverEmp"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_orders_P1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "bronzeParquetOrders_P1",
+								"type": "DatasetReference"
+							},
+							"name": "bronzeOrders"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SilverParquetOrders_P1",
+								"type": "DatasetReference"
+							},
+							"name": "sinkSilverOrders"
+						}
+					],
+					"transformations": [
+						{
+							"name": "filterPK"
+						},
+						{
+							"name": "window1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          OrderID as integer,",
+						"          CustomerID as integer,",
+						"          OrderDate as date,",
+						"          OrderAmount as decimal(10,2)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> bronzeOrders",
+						"bronzeOrders filter(!isNull(OrderID) && OrderID!= 0) ~> filterPK",
+						"filterPK window(over(OrderID),",
+						"     asc(OrderID, true),",
+						"     row_num = rowNumber()) ~> window1",
+						"window1 filter(row_num == 1) ~> filter1",
+						"filter1 select(mapColumn(",
+						"          OrderID,",
+						"          CustomerID,",
+						"          OrderDate,",
+						"          OrderAmount",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sinkSilverOrders"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/bronzeParquetOrders_P1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_products_P1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "bronzeParquetProducts_P1",
+								"type": "DatasetReference"
+							},
+							"name": "bronzeProducts"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SilverParquetProducts_P1",
+								"type": "DatasetReference"
+							},
+							"name": "sinkSilverProducts"
+						}
+					],
+					"transformations": [
+						{
+							"name": "select1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "window1"
+						},
+						{
+							"name": "filter2"
+						},
+						{
+							"name": "select2"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ProductID as integer,",
+						"          ProductName as string,",
+						"          Category as string,",
+						"          Price as decimal(10,2),",
+						"          CreatedDate as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     limit: 10,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> bronzeProducts",
+						"bronzeProducts select(mapColumn(",
+						"          ProductID,",
+						"          ProductName,",
+						"          Category,",
+						"          Price,",
+						"          CreatedDate",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 filter(!isNull(ProductID) && ProductID != 0) ~> filter1",
+						"filter1 window(over(ProductID),",
+						"     asc(ProductID, true),",
+						"     row_num = rowNumber()) ~> window1",
+						"window1 filter(row_num==1) ~> filter2",
+						"filter2 select(mapColumn(",
+						"          ProductID,",
+						"          ProductName,",
+						"          Category,",
+						"          Price,",
+						"          CreatedDate",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"select2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sinkSilverProducts"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/bronzeParquetProducts_P1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_sales_P1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "bronzeParquetSales_P1",
+								"type": "DatasetReference"
+							},
+							"name": "bronzeSales"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SilverParquetSales_P1",
+								"type": "DatasetReference"
+							},
+							"name": "sinkSilverSales"
+						}
+					],
+					"transformations": [
+						{
+							"name": "filter1",
+							"description": "Filtering rows using expressions on columns 'CustomerID'; Removing nulls and  zero value PKs. "
+						},
+						{
+							"name": "window1"
+						},
+						{
+							"name": "filter2"
+						},
+						{
+							"name": "select2"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          SaleID as integer,",
+						"          ProductID as integer,",
+						"          Quantity as integer,",
+						"          SaleDate as date,",
+						"          TotalAmount as decimal(10,2)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     limit: 10,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> bronzeSales",
+						"bronzeSales filter(!isNull(SaleID) && SaleID != 0) ~> filter1",
+						"filter1 window(over(SaleID),",
+						"     asc(SaleID, true),",
+						"     row_num = rowNumber()) ~> window1",
+						"window1 filter(row_num==1) ~> filter2",
+						"filter2 select(mapColumn(",
+						"          SaleID,",
+						"          ProductID,",
+						"          Quantity,",
+						"          SaleDate,",
+						"          TotalAmount",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"select2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sinkSilverSales"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/bronzeParquetSales_P1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Bronze_Silver_eventTriggered_P1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Switch",
+						"type": "Switch",
+						"dependsOn": [
+							{
+								"activity": "Set variable",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"on": {
+								"value": "@split(variables('eventPath'),'/')[2]",
+								"type": "Expression"
+							},
+							"cases": [
+								{
+									"value": "customers",
+									"activities": [
+										{
+											"name": "DataFlowCustomers",
+											"type": "ExecuteDataFlow",
+											"dependsOn": [],
+											"policy": {
+												"timeout": "0.12:00:00",
+												"retry": 0,
+												"retryIntervalInSeconds": 30,
+												"secureOutput": false,
+												"secureInput": false
+											},
+											"userProperties": [],
+											"typeProperties": {
+												"dataflow": {
+													"referenceName": "dataflow_customers_P1",
+													"type": "DataFlowReference",
+													"parameters": {},
+													"datasetParameters": {
+														"bronzeCustomer": {
+															"container": {
+																"value": "@split(variables('eventPath'),'/')[0]",
+																"type": "Expression"
+															},
+															"folderPath": {
+																"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+																"type": "Expression"
+															},
+															"fileName": {
+																"value": "@pipeline().parameters.pFileName",
+																"type": "Expression"
+															}
+														},
+														"sinkSilverCustomer": {
+															"container": "silver",
+															"directory": {
+																"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+																"type": "Expression"
+															},
+															"filename": {
+																"value": "@pipeline().parameters.pFileName",
+																"type": "Expression"
+															}
+														}
+													}
+												},
+												"staging": {},
+												"compute": {
+													"coreCount": 8,
+													"computeType": "General"
+												},
+												"traceLevel": "Fine"
+											}
+										}
+									]
+								},
+								{
+									"value": "employees",
+									"activities": [
+										{
+											"name": "DataFlowEmployees",
+											"type": "ExecuteDataFlow",
+											"dependsOn": [],
+											"policy": {
+												"timeout": "0.12:00:00",
+												"retry": 0,
+												"retryIntervalInSeconds": 30,
+												"secureOutput": false,
+												"secureInput": false
+											},
+											"userProperties": [],
+											"typeProperties": {
+												"dataflow": {
+													"referenceName": "dataflow_employees_P1",
+													"type": "DataFlowReference",
+													"parameters": {},
+													"datasetParameters": {
+														"bronzeEmp": {
+															"container": "@split(variables('eventPath'),'/')[0]",
+															"folderPath": {
+																"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+																"type": "Expression"
+															},
+															"fileName": {
+																"value": "@pipeline().parameters.pFileName",
+																"type": "Expression"
+															}
+														},
+														"sinkSilverEmp": {
+															"container": "silver",
+															"directory": {
+																"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+																"type": "Expression"
+															},
+															"filename": {
+																"value": "@pipeline().parameters.pFileName",
+																"type": "Expression"
+															}
+														}
+													}
+												},
+												"staging": {},
+												"compute": {
+													"coreCount": 8,
+													"computeType": "General"
+												},
+												"traceLevel": "Fine"
+											}
+										}
+									]
+								},
+								{
+									"value": "orders",
+									"activities": [
+										{
+											"name": "DataFlowOrders",
+											"type": "ExecuteDataFlow",
+											"dependsOn": [],
+											"policy": {
+												"timeout": "0.12:00:00",
+												"retry": 0,
+												"retryIntervalInSeconds": 30,
+												"secureOutput": false,
+												"secureInput": false
+											},
+											"userProperties": [],
+											"typeProperties": {
+												"dataflow": {
+													"referenceName": "dataflow_orders_P1",
+													"type": "DataFlowReference",
+													"parameters": {},
+													"datasetParameters": {
+														"bronzeOrders": {
+															"container": "@split(variables('eventPath'),'/')[0]",
+															"directory": {
+																"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+																"type": "Expression"
+															},
+															"filename": {
+																"value": "@pipeline().parameters.pFileName",
+																"type": "Expression"
+															}
+														},
+														"sinkSilverOrders": {
+															"container": "silver",
+															"directory": {
+																"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+																"type": "Expression"
+															},
+															"filename": {
+																"value": "@pipeline().parameters.pFileName",
+																"type": "Expression"
+															}
+														}
+													}
+												},
+												"staging": {},
+												"compute": {
+													"coreCount": 8,
+													"computeType": "General"
+												},
+												"traceLevel": "Fine"
+											}
+										}
+									]
+								},
+								{
+									"value": "products",
+									"activities": [
+										{
+											"name": "DataFlowProducts",
+											"type": "ExecuteDataFlow",
+											"dependsOn": [],
+											"policy": {
+												"timeout": "0.12:00:00",
+												"retry": 0,
+												"retryIntervalInSeconds": 30,
+												"secureOutput": false,
+												"secureInput": false
+											},
+											"userProperties": [],
+											"typeProperties": {
+												"dataflow": {
+													"referenceName": "dataflow_products_P1",
+													"type": "DataFlowReference",
+													"parameters": {},
+													"datasetParameters": {
+														"bronzeProducts": {
+															"container": "@split(variables('eventPath'),'/')[0]",
+															"folderPath": {
+																"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+																"type": "Expression"
+															},
+															"fileName": {
+																"value": "@pipeline().parameters.pFileName",
+																"type": "Expression"
+															}
+														},
+														"sinkSilverProducts": {
+															"container": "silver",
+															"directory": {
+																"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+																"type": "Expression"
+															},
+															"filename": {
+																"value": "@pipeline().parameters.pFileName",
+																"type": "Expression"
+															}
+														}
+													}
+												},
+												"staging": {},
+												"compute": {
+													"coreCount": 8,
+													"computeType": "General"
+												},
+												"traceLevel": "Fine"
+											}
+										},
+										{
+											"name": "Copy",
+											"type": "Copy",
+											"dependsOn": [
+												{
+													"activity": "DataFlowProducts",
+													"dependencyConditions": [
+														"Succeeded"
+													]
+												}
+											],
+											"policy": {
+												"timeout": "0.12:00:00",
+												"retry": 0,
+												"retryIntervalInSeconds": 30,
+												"secureOutput": false,
+												"secureInput": false
+											},
+											"userProperties": [],
+											"typeProperties": {
+												"source": {
+													"type": "ParquetSource",
+													"storeSettings": {
+														"type": "AzureBlobFSReadSettings",
+														"recursive": true,
+														"wildcardFolderPath": {
+															"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+															"type": "Expression"
+														},
+														"wildcardFileName": "*",
+														"enablePartitionDiscovery": false
+													},
+													"formatSettings": {
+														"type": "ParquetReadSettings"
+													}
+												},
+												"sink": {
+													"type": "AzureSqlSink",
+													"preCopyScript": "truncate table dbo.Stg_Products_Silver",
+													"writeBehavior": "insert",
+													"sqlWriterUseTableLock": false,
+													"disableMetricsCollection": false
+												},
+												"enableStaging": false,
+												"translator": {
+													"type": "TabularTranslator",
+													"typeConversion": true,
+													"typeConversionSettings": {
+														"allowDataTruncation": true,
+														"treatBooleanAsNumber": false
+													}
+												}
+											},
+											"inputs": [
+												{
+													"referenceName": "SilverParquetProducts2_P1",
+													"type": "DatasetReference",
+													"parameters": {
+														"folderPath": {
+															"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+															"type": "Expression"
+														},
+														"container": "silver"
+													}
+												}
+											],
+											"outputs": [
+												{
+													"referenceName": "AzureSqlTable1_P1",
+													"type": "DatasetReference",
+													"parameters": {}
+												}
+											]
+										},
+										{
+											"name": "SCD1_Upsert_products",
+											"type": "SqlServerStoredProcedure",
+											"dependsOn": [
+												{
+													"activity": "Copy",
+													"dependencyConditions": [
+														"Succeeded"
+													]
+												}
+											],
+											"policy": {
+												"timeout": "0.12:00:00",
+												"retry": 0,
+												"retryIntervalInSeconds": 30,
+												"secureOutput": false,
+												"secureInput": false
+											},
+											"userProperties": [],
+											"typeProperties": {
+												"storedProcedureName": "[[dbo].[usp_Merge_Products_SCD1]"
+											},
+											"linkedServiceName": {
+												"referenceName": "AzureSqlDatabase1",
+												"type": "LinkedServiceReference"
+											}
+										}
+									]
+								},
+								{
+									"value": "sales",
+									"activities": [
+										{
+											"name": "DataFlowSales",
+											"type": "ExecuteDataFlow",
+											"dependsOn": [],
+											"policy": {
+												"timeout": "0.12:00:00",
+												"retry": 0,
+												"retryIntervalInSeconds": 30,
+												"secureOutput": false,
+												"secureInput": false
+											},
+											"userProperties": [],
+											"typeProperties": {
+												"dataflow": {
+													"referenceName": "dataflow_sales_P1",
+													"type": "DataFlowReference",
+													"parameters": {},
+													"datasetParameters": {
+														"bronzeSales": {
+															"container": "@split(variables('eventPath'),'/')[0]",
+															"folderPath": {
+																"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+																"type": "Expression"
+															},
+															"fileName": {
+																"value": "@pipeline().parameters.pFileName",
+																"type": "Expression"
+															}
+														},
+														"sinkSilverSales": {
+															"container": "silver",
+															"directory": {
+																"value": "@replace(pipeline().parameters.pFolderPath,'bronze/','')",
+																"type": "Expression"
+															},
+															"filename": {
+																"value": "@pipeline().parameters.pFileName",
+																"type": "Expression"
+															}
+														}
+													}
+												},
+												"staging": {},
+												"compute": {
+													"coreCount": 8,
+													"computeType": "General"
+												},
+												"traceLevel": "Fine"
+											}
+										}
+									]
+								}
+							],
+							"defaultActivities": [
+								{
+									"name": "Wait1",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 1
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Set variable",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "eventPath",
+							"value": {
+								"value": "@concat(pipeline().parameters.pFolderPath,'/',pipeline().parameters.pFileName)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"pFolderPath": {
+						"type": "string"
+					},
+					"pFileName": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"eventPath": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-03-13T00:42:58Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow_customers_P1')]",
+				"[concat(variables('factoryId'), '/dataflows/dataflow_employees_P1')]",
+				"[concat(variables('factoryId'), '/dataflows/dataflow_orders_P1')]",
+				"[concat(variables('factoryId'), '/dataflows/dataflow_products_P1')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1_P1')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]",
+				"[concat(variables('factoryId'), '/dataflows/dataflow_sales_P1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/JPH_GET_ingest_P1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEachJPH",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@createArray('posts','comments','albums','photos','todos','users')",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "copyData_JPH_G2",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "RestSource",
+											"httpRequestTimeout": "00:01:40",
+											"requestInterval": "00.00:00:00.010",
+											"requestMethod": "GET",
+											"paginationRules": {
+												"supportRFC5988": "true"
+											}
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "RestResourceJPH_P1",
+											"type": "DatasetReference",
+											"parameters": {
+												"relativeURL": {
+													"value": "@item()",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ADLSG2ds_P1",
+											"type": "DatasetReference",
+											"parameters": {
+												"filename": {
+													"value": "@item()",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "copyData_bronzeJPH_aSQLdb",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "copyData_JPH_G2",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"preCopyScript": {
+												"value": "@{concat('truncate table dbo.',item())}",
+												"type": "Expression"
+											},
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false,
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ADLSG2ds_P1",
+											"type": "DatasetReference",
+											"parameters": {
+												"filename": {
+													"value": "@item()",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "AzureSqlTable_P1",
+											"type": "DatasetReference",
+											"parameters": {
+												"tableName": {
+													"value": "@item()",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-03-11T15:38:19Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable_P1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OnpremTables_Bronze_P1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup_MetaData",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "SELECT\n    SourceSystem,\n    SourceSchema,\n    SourceTable,\n    BronzeContainer,\n    BronzeFolder,\n    BronzeFileName,\n    SilverContainer,\n    SilverFolder,\n    GoldTable,\n    LoadType,\n    PrimaryKeyColumn,\n    WatermarkColumn,\n    IsActive,\n    LoadSequence\nFROM dbo.ADF_Table_Metadata\nWHERE IsActive = 1\nORDER BY LoadSequence;",
+								"queryTimeout": "00:10:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SqlServerTable1_P1",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup_MetaData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup_MetaData').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy_SQL_Bronze",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderQuery": {
+												"value": "@concat('SELECT * FROM [', item().SourceSchema, '].[', item().SourceTable, ']')",
+												"type": "Expression"
+											},
+											"queryTimeout": "00:10:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "ParquetWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SqlServerTable1_P1",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Parquet1_P1",
+											"type": "DatasetReference",
+											"parameters": {
+												"fileSystem": {
+													"value": "@item().BronzeContainer",
+													"type": "Expression"
+												},
+												"directory": {
+													"value": "@concat(item().BronzeFolder, 'load_date=', formatDateTime(utcNow(),'yyyy-MM-dd'), '/')",
+													"type": "Expression"
+												},
+												"fileName": {
+													"value": "@item().BronzeFileName",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-03-12T14:47:31Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable1_P1')]"
+			]
+		}
+	]
+}
