@@ -1,0 +1,9 @@
+{
+	"name": "ragadf17",
+	"location": "canadacentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "43194f69-0e07-4c11-9a01-7fbe447dcc43",
+		"tenantId": "a4a7115e-4391-4af1-b3c3-baa5c36b1b04"
+	}
+}

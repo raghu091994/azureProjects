@@ -1,0 +1,87 @@
+{
+	"name": "dataflow_customers",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "bronzeCustomerParquet",
+						"type": "DatasetReference"
+					},
+					"name": "bronzeCustomer"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SilverParquetCustomer",
+						"type": "DatasetReference"
+					},
+					"name": "sinkSilverCustomer"
+				}
+			],
+			"transformations": [
+				{
+					"name": "select1"
+				},
+				{
+					"name": "filter1",
+					"description": "Filtering rows using expressions on columns 'CustomerID'; Removing nulls and  zero value PKs. "
+				},
+				{
+					"name": "window1"
+				},
+				{
+					"name": "filter2"
+				},
+				{
+					"name": "select2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CustomerID as integer,",
+				"          CustomerName as string,",
+				"          City as string,",
+				"          Country as string,",
+				"          load_date as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     limit: 10,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> bronzeCustomer",
+				"bronzeCustomer select(mapColumn(",
+				"          CustomerID,",
+				"          CustomerName,",
+				"          City,",
+				"          Country",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 filter(!isNull(CustomerID) && CustomerID != 0) ~> filter1",
+				"filter1 window(over(CustomerID),",
+				"     asc(CustomerID, true),",
+				"     row_num = rowNumber()) ~> window1",
+				"window1 filter(row_num==1) ~> filter2",
+				"filter2 select(mapColumn(",
+				"          CustomerID,",
+				"          CustomerName,",
+				"          City,",
+				"          Country",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinkSilverCustomer"
+			]
+		}
+	}
+}

@@ -1,0 +1,33 @@
+{
+	"name": "ADLSG2ds",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adlsg2ragLS",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat('bronze/',concat(dataset().filename,'.csv'))",
+					"type": "Expression"
+				},
+				"folderPath": "jsonplaceholder",
+				"fileSystem": "bronze"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

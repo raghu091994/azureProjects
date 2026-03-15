@@ -1,0 +1,25 @@
+{
+	"name": "RestResourceJPH",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestServiceJSONholder",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"relativeURL": {
+				"type": "string",
+				"defaultValue": "'posts'"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@dataset().relativeURL",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

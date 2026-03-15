@@ -1,0 +1,28 @@
+{
+	"name": "eventTriggerBronze",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Bronze_Silver_eventTriggered_p1",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"pFolderPath": "@triggerBody().folderPath",
+					"pFileName": "@triggerBody().fileName"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/bronze/blobs/sqlserver/",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/c8ce2eef-2dc1-42c3-bf55-07bd3fa6dd03/resourceGroups/BootcampC34/providers/Microsoft.Storage/storageAccounts/adlsg2rag",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
