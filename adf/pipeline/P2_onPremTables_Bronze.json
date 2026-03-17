@@ -1,0 +1,126 @@
+{
+	"name": "P2_onPremTables_Bronze",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup_MetaData",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT\n    SourceSystem,\n    SourceSchema,\n    SourceTable,\n    BronzeContainer,\n    BronzeFolder,\n    BronzeFileName,\n    SilverContainer,\n    SilverFolder,\n    GoldTable,\n    LoadType,\n    PrimaryKeyColumn,\n    WatermarkColumn,\n    IsActive,\n    LoadSequence\nFROM dbo.ADF_Table_Metadata\nWHERE IsActive = 1\nORDER BY LoadSequence;",
+						"queryTimeout": "00:10:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SqlServerTable1_P1",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup_MetaData",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup_MetaData').output.value",
+						"type": "Expression"
+					},
+					"batchCount": 50,
+					"activities": [
+						{
+							"name": "Copy_SQL_Bronze",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT * FROM [', item().SourceSchema, '].[', item().SourceTable, ']')",
+										"type": "Expression"
+									},
+									"queryTimeout": "00:10:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "SqlServerTable1_P1",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Parquet1_P1",
+									"type": "DatasetReference",
+									"parameters": {
+										"fileSystem": {
+											"value": "@item().BronzeContainer",
+											"type": "Expression"
+										},
+										"directory": {
+											"value": "@concat(item().BronzeFolder, 'load_date=', formatDateTime(utcNow(),'yyyy-MM-dd'), '/')",
+											"type": "Expression"
+										},
+										"fileName": {
+											"value": "@item().BronzeFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-03-12T14:47:31Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
