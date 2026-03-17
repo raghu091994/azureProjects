@@ -8,6 +8,9 @@
 		"adlsg2ragLS_accountKey": {
 			"value": ""
 		},
+		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"value": "0317-035613-pg7pn7ve"
+		},
 		"AzureKeyVault2_properties_typeProperties_baseUrl": {
 			"value": "https://ragakv.vault.azure.net/"
 		},
