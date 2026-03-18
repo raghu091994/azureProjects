@@ -803,6 +803,37 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/eventTriggerBronze')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Bronze_Silver_eventTriggered_P1",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"pFolderPath": "[parameters('eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFolderPath')]",
+							"pFileName": "[parameters('eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFileName')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/bronze/blobs/sqlserver/",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('eventTriggerBronze_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/scheduleTriggerJPH_Bronze')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -846,6 +877,13 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "P2_masterPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -859,46 +897,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/OnpremTables_Bronze_P1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/eventTriggerBronze')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Bronze_Silver_eventTriggered_P1",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"pFolderPath": "[parameters('eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFolderPath')]",
-							"pFileName": "[parameters('eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFileName')]"
-						}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "P2_masterPipeline",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/bronze/blobs/sqlserver/",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('eventTriggerBronze_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/OnpremTables_Bronze_P1')]",
 				"[concat(variables('factoryId'), '/pipelines/P2_masterPipeline')]"
 			]
 		}
