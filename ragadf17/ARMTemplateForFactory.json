@@ -838,7 +838,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/P2_BronzeToSilver')]",
+			"name": "[concat(parameters('factoryName'), '/P2_BronzeToSilver_Gold')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1037,7 +1037,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"name": "[concat(parameters('factoryName'), '/P2_masterPipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1076,7 +1076,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "P2_BronzeToSilver",
+								"referenceName": "P2_BronzeToSilver_Gold",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -1091,7 +1091,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/P2_onPremTables_Bronze')]",
-				"[concat(variables('factoryId'), '/pipelines/P2_BronzeToSilver')]"
+				"[concat(variables('factoryId'), '/pipelines/P2_BronzeToSilver_Gold')]"
 			]
 		},
 		{
@@ -2700,6 +2700,13 @@
 							"pFolderPath": "[parameters('eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFolderPath')]",
 							"pFileName": "[parameters('eventTriggerBronze_properties_Bronze_Silver_eventTriggered_P1_parameters_pFileName')]"
 						}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "P2_masterPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "BlobEventsTrigger",
@@ -2713,7 +2720,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Bronze_Silver_eventTriggered_P1')]"
+				"[concat(variables('factoryId'), '/pipelines/Bronze_Silver_eventTriggered_P1')]",
+				"[concat(variables('factoryId'), '/pipelines/P2_masterPipeline')]"
 			]
 		},
 		{
