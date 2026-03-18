@@ -13,12 +13,6 @@
 					"pFolderPath": "@triggerBody().folderPath",
 					"pFileName": "@triggerBody().fileName"
 				}
-			},
-			{
-				"pipelineReference": {
-					"referenceName": "P2_masterPipeline",
-					"type": "PipelineReference"
-				}
 			}
 		],
 		"type": "BlobEventsTrigger",
