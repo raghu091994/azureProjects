@@ -9,6 +9,12 @@
 					"referenceName": "OnpremTables_Bronze_P1",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "P2_masterPipeline",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
