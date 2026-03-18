@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "P2_masterPipeline",
 	"properties": {
 		"activities": [
 			{
@@ -35,7 +35,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "P2_BronzeToSilver",
+						"referenceName": "P2_BronzeToSilver_Gold",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
