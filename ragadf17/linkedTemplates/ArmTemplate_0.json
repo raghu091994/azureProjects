@@ -121,6 +121,60 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "adlsg2ragLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "users.csv",
+						"folderPath": "jsonplaceholder/bronze",
+						"fileSystem": "bronze"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "username",
+						"type": "String"
+					},
+					{
+						"name": "email",
+						"type": "String"
+					},
+					{
+						"name": "phone",
+						"type": "String"
+					},
+					{
+						"name": "website",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/adlsg2ragLS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Parquet1_P1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -697,76 +751,6 @@
 					"fileName": {
 						"type": "string",
 						"defaultValue": "customers.parquet"
-					}
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().fileName",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folderPath",
-							"type": "Expression"
-						},
-						"fileSystem": {
-							"value": "@dataset().container",
-							"type": "Expression"
-						}
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "INT32"
-					},
-					{
-						"name": "CustomerName",
-						"type": "UTF8"
-					},
-					{
-						"name": "City",
-						"type": "UTF8"
-					},
-					{
-						"name": "Country",
-						"type": "UTF8"
-					},
-					{
-						"name": "load_date",
-						"type": "UTF8"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/adlsg2ragLS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/bronzeParquetEmployees_P1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "adlsg2ragLS",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"container": {
-						"type": "string",
-						"defaultValue": "bronze"
-					},
-					"folderPath": {
-						"type": "string",
-						"defaultValue": "sqlserver/employees/load_date=2026-03-12"
-					},
-					"fileName": {
-						"type": "string",
-						"defaultValue": "employees.parquet"
 					}
 				},
 				"annotations": [],
