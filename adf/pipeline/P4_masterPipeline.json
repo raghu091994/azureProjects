@@ -1,0 +1,39 @@
+{
+	"name": "P4_masterPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "P4_executeETL",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "P4_visualizationsExecute",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "P4_executeETL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": []
+	}
+}
